@@ -10,7 +10,9 @@ export default function App() {
       root={(properties) => (
         <>
           <Nav />
-          <Suspense>{properties.children}</Suspense>
+          <div class="p-10">
+            <Suspense>{properties.children}</Suspense>
+          </div>
         </>
       )}
     >

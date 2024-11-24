@@ -7,13 +7,13 @@ export default function Nav() {
       ? "border-sky-600"
       : "border-transparent hover:border-sky-600";
   return (
-    <nav class="bg-sky-800">
+    <nav class="bg-sky-500 shadow-md">
       <ul class="container flex items-center p-3 text-gray-200">
         <li class={`border-b-2 ${active("/")} mx-1.5 sm:mx-6`}>
           <a href="/">Home</a>
         </li>
         <li class={`border-b-2 ${active("/about")} mx-1.5 sm:mx-6`}>
-          <a href="/about">About</a>
+          <a href="/spending">Spending</a>
         </li>
       </ul>
     </nav>

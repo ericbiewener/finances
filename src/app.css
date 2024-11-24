@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
+/* :root {
   --background-rgb: 214, 219, 220;
   --foreground-rgb: 0, 0, 0;
 }
@@ -12,9 +12,11 @@
     --background-rgb: 0, 0, 0;
     --foreground-rgb: 255, 255, 255;
   }
-}
+} */
 
 body {
-  background: rgb(var(--background-rgb));
-  color: rgb(var(--foreground-rgb));
+  @apply bg-slate-100;
+  @apply text-slate-800;
+  /* background: rgb(var(--background-rgb));
+  color: rgb(var(--foreground-rgb)); */
 }

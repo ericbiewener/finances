@@ -2,12 +2,13 @@
 import invariant from "invariant";
 import { FC } from "react";
 import { SchwabPositions } from "../../accounts/schemas";
-import { TdHeader } from "../../components/table/basic";
 import { H1, H2 } from "../../components/ui/headers";
+import { TdHeader } from "../../components/ui/table";
 import { fundInfo } from "../../funds/fund-info";
 import { storageKey } from "../../utils/local-storage/storage-key";
 import { toCurrency } from "../../utils/numbers/to-currency";
 import { toPercentage } from "../../utils/numbers/to-percentage";
+import { AllocationForm } from "./allocation-form";
 
 const skipKeys = ["Account Total"];
 
@@ -57,12 +58,10 @@ export const AllocationPage: FC<Props> = ({ schwabPositions }) => {
     "additionalCash",
   );
 
-  console.info(`:: additionalCash`, additionalCash);
-
   return (
     <>
       <H1 className="mb-8">Allocation</H1>
-      <div className="flex flex-col space-y-8">
+      <div className="flex flex-col gap-y-8">
         <div>
           <H2>Adjustments</H2>
           <label>
@@ -110,6 +109,7 @@ export const AllocationPage: FC<Props> = ({ schwabPositions }) => {
             </tbody>
           </table>
         </div>
+        <AllocationForm funds={Object.keys(summed)} />
       </div>
     </>
   );

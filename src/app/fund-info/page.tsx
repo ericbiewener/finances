@@ -52,7 +52,7 @@ export default async function FundInfoPage() {
   return (
     <>
       <H1 className="mb-8">Fund Info</H1>
-      <div className="flex flex-col space-y-8">
+      <div className="flex flex-col gap-y-8">
         {allocationTypes.map((a) => (
           <FundForAlloc key={a} allocationType={a} />
         ))}

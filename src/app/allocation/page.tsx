@@ -1,5 +1,5 @@
+import { AllocationPage } from "../../components/allocation/allocation-page";
 import { getSchwabPositions } from "../../server/get-schwab-positions";
-import { AllocationPage } from "./allocation-page";
 
 export default async function Page() {
   const schwabPositions = await getSchwabPositions();

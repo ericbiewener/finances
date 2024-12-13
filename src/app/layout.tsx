@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Nav from "../components/Nav";
+import { MAIN_CENTERED_CLASS_NAME } from "../components/ui/constants";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -29,7 +30,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Nav />
-        {children}
+        <main className={`${MAIN_CENTERED_CLASS_NAME} py-8`}>{children}</main>
       </body>
     </html>
   );

@@ -10,9 +10,6 @@ export default defineWorkspace([
       environment: "node",
       include: ["src/**/*.test.{ts,tsx}"],
       exclude: BROWSER_TEST_INCLUDE,
-      typecheck: {
-        tsconfig: "tsconfig.test.json",
-      },
     },
   },
   {
@@ -21,9 +18,6 @@ export default defineWorkspace([
       name: "browser",
       environment: "jsdom",
       include: BROWSER_TEST_INCLUDE,
-      typecheck: {
-        tsconfig: "tsconfig.test.json",
-      },
       environmentOptions: {
         jsdom: { url: "https://local.ebay.com:8082" },
       },

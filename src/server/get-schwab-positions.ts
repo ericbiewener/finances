@@ -1,12 +1,11 @@
-import { query } from "@solidjs/router";
-import { readSchwabPositions } from "../accounts/read-schwab-positions";
+"use server";
 import assert from "assert";
+import { readSchwabPositions } from "../accounts/read-schwab-positions";
 
-export const getSchwabPositions = query(async () => {
-  "use server";
+export const getSchwabPositions = async () => {
   assert(
     process.env.SCHWAB_POSITIONS_FILE,
     "SCHWAB_POSITIONS_FILE should be defined",
   );
   return readSchwabPositions(process.env.SCHWAB_POSITIONS_FILE);
-}, "schwabPositions");
+};

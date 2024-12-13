@@ -1,9 +1,8 @@
-import { Component, JSXElement } from "solid-js";
-import { withClass } from "../ui/with-class";
+import { FCC } from "../../../types/react";
+import { withClassName } from "../ui/with-class-name";
 
 type Props = {
-  children: JSXElement;
-  class?: string;
+  className?: string;
 };
 
-export const TdHeader: Component<Props> = withClass("td", "pr-2 font-bold");
+export const TdHeader: FCC<Props> = withClassName("td", "pr-2 font-bold");

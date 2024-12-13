@@ -1,20 +1,19 @@
 import { capitalCase } from "change-case";
-import { Component } from "solid-js";
-import { H1, H2 } from "../components/ui/headers";
+import { FC } from "react";
+import { H1, H2 } from "../../components/ui/headers";
 import {
   allocationTypes,
   fundInfo,
   fundsByAllocation,
-} from "../funds/fund-info";
-import { AllocationType } from "../funds/types";
-import { createAsync } from "@solidjs/router";
-import { getSchwabPositions } from "../server/get-schwab-positions";
+} from "../../funds/fund-info";
+import { AllocationType } from "../../funds/types";
+import { getSchwabPositions } from "../../server/get-schwab-positions";
 
 type Props = {
   allocationType: AllocationType;
 };
 
-const FundForAlloc: Component<Props> = ({ allocationType }) => {
+const FundForAlloc: FC<Props> = ({ allocationType }) => {
   const funds = fundsByAllocation[allocationType];
   return funds.length ? (
     <div>
@@ -31,7 +30,7 @@ const FundForAlloc: Component<Props> = ({ allocationType }) => {
           {funds.map((sym) => {
             const fund = fundInfo[sym];
             return (
-              <tr>
+              <tr key={sym}>
                 <td>
                   <a href={fund.url}>{sym}</a>
                 </td>
@@ -46,16 +45,16 @@ const FundForAlloc: Component<Props> = ({ allocationType }) => {
   ) : null;
 };
 
-export default function FundInfo() {
-  const positions = createAsync(() => getSchwabPositions());
-  console.info(`:: positions`, positions())
+export default async function FundInfoPage() {
+  const positions = await getSchwabPositions();
+  console.info(`:: positions`, positions);
 
   return (
     <>
-      <H1 class="mb-8">Fund Info</H1>
-      <div class="flex flex-col space-y-8">
+      <H1 className="mb-8">Fund Info</H1>
+      <div className="flex flex-col space-y-8">
         {allocationTypes.map((a) => (
-          <FundForAlloc allocationType={a} />
+          <FundForAlloc key={a} allocationType={a} />
         ))}
       </div>
     </>

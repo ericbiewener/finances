@@ -1,5 +1,6 @@
 import js from "@eslint/js";
 import importPlugin from "eslint-plugin-import-x";
+import vitest from "eslint-plugin-vitest";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 
@@ -55,9 +56,13 @@ export default [
     ...sharedConfigs,
     files: ["**/*.test.ts", "**/*.test.tsx"],
     rules: {
+      ...vitest.configs.recommended.rules,
       "testing-library/no-node-access": "off",
       "testing-library/render-result-naming-convention": "off",
       "testing-library/await-async-utils": "off",
+    },
+    plugins: {
+      vitest,
     },
   },
   // No idea how to fix this. This comment suggests that using

@@ -3,7 +3,7 @@ import { Component, ComponentProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 export const withClass =
-  <C extends Component<{ className?: string }>>(
+  <C extends Component<{ class?: string }>>(
     Component: C | string,
     className: string,
   ): C =>
@@ -11,7 +11,7 @@ export const withClass =
   (props: ComponentProps<C>) => {
     const finalProps = {
       ...props,
-      className: clsx(className, props.className),
+      class: clsx(className, props.class),
     };
     return typeof Component === "string" ? (
       <Dynamic {...finalProps} component={Component} />

@@ -1,36 +1,19 @@
-export const schwabRetirementAccountNames = ["IRA", "Roth", "TRS"] as const;
-export const schwabAccountsToIgnore = [
-  "Checking Brokerage",
-  "EF II - JOINT",
-  "LPS - JOINT",
-  "TRS - JOINT",
-  "Joint Checking",
-  "Checking - Joint",
-] as const;
+import { AccountNameSchwab } from "./accounts-by-type";
 
-export const retirementAccountNames = [
-  "401k",
-  ...schwabRetirementAccountNames,
-] as const;
+type Brokerage = Exclude<AccountNameSchwab, "Checking">;
 
-export type SchwabRetirementAccountName = typeof schwabRetirementAccountNames;
-export type SchwabAccountsToIgnore = typeof schwabAccountsToIgnore;
-export type Four01kAccountName = "401k";
-export type RetirementAccountName = typeof retirementAccountNames;
-export type CheckingAccountName = "Checking";
-export type EmergencyFundAccountName = "EF II";
+type BrokerageData = {
+  accountNum: string;
+  cash: number;
+  balance: number;
+};
 
-export type SchwabLPSAccountName = "LPS";
+type CheckingData = {
+  accountNum: string;
+  cash: null;
+  balance: number;
+};
 
-export type SchwabAccountName =
-  | SchwabRetirementAccountName
-  | CheckingAccountName
-  | EmergencyFundAccountName
-  | SchwabLPSAccountName;
-
-export type AccountName =
-  | RetirementAccountName
-  | CheckingAccountName
-  | EmergencyFundAccountName;
-
-export type AccountData = { balance: number; accountNum: string };
+export type SchwabAccountTotals = Record<Brokerage, BrokerageData> & {
+  Checking: CheckingData;
+};

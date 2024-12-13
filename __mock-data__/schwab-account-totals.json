@@ -1,0 +1,37 @@
+{
+  "EF2": {
+      "accountNum": "416",
+      "cash": 0,
+      "balance": 21425.94
+  },
+  "Checking Brokerage": {
+      "accountNum": "800",
+      "cash": 0,
+      "balance": 0
+  },
+  "LPS": {
+      "accountNum": "059",
+      "cash": 0,
+      "balance": 34554.59
+  },
+  "IRA": {
+      "accountNum": "082",
+      "cash": 1499.62,
+      "balance": 363420.47
+  },
+  "Roth": {
+      "accountNum": "912",
+      "cash": 0.7,
+      "balance": 25441.13
+  },
+  "TRS": {
+      "accountNum": "153",
+      "cash": 208906.44,
+      "balance": 390627.99
+  },
+  "Checking": {
+      "accountNum": "383",
+      "cash": null,
+      "balance": 14671.32
+  }
+}

@@ -1,13 +1,13 @@
-import { createAsync } from "@solidjs/router";
+"use client";
 import invariant from "invariant";
-import { SchwabPositions } from "../accounts/schemas";
-import { TdHeader } from "../components/table/basic";
-import { H1, H2 } from "../components/ui/headers";
-import { fundInfo } from "../funds/fund-info";
-import { getSchwabPositions } from "../server/get-schwab-positions";
-import { storageKey } from "../utils/local-storage/storage-key.ts";
-import { toCurrency } from "../utils/numbers/to-currency";
-import { toPercentage } from "../utils/numbers/to-percentage";
+import { FC } from "react";
+import { SchwabPositions } from "../../accounts/schemas";
+import { TdHeader } from "../../components/table/basic";
+import { H1, H2 } from "../../components/ui/headers";
+import { fundInfo } from "../../funds/fund-info";
+import { storageKey } from "../../utils/local-storage/storage-key";
+import { toCurrency } from "../../utils/numbers/to-currency";
+import { toPercentage } from "../../utils/numbers/to-percentage";
 
 const skipKeys = ["Account Total"];
 
@@ -47,25 +47,22 @@ const computeTotals = (summed: Record<string, number>) => {
   };
 };
 
-export default function Allocation() {
-  const positions = createAsync(() => getSchwabPositions());
-  const pos = positions();
+type Props = { schwabPositions: SchwabPositions };
 
-  if (!pos) return <div>Loading...</div>;
-
-  const summed = sumPositions(pos);
+export const AllocationPage: FC<Props> = ({ schwabPositions }) => {
+  const summed = sumPositions(schwabPositions);
   const { allocations, totals } = computeTotals(summed);
 
   const [additionalCash, storeAdditionalCash] = storageKey<{ value: number }>(
     "additionalCash",
   );
 
-  console.info(`:: additionalCash`, additionalCash)
+  console.info(`:: additionalCash`, additionalCash);
 
   return (
     <>
-      <H1 class="mb-8">Allocation</H1>
-      <div class="flex flex-col space-y-8">
+      <H1 className="mb-8">Allocation</H1>
+      <div className="flex flex-col space-y-8">
         <div>
           <H2>Adjustments</H2>
           <label>
@@ -73,7 +70,9 @@ export default function Allocation() {
             <input
               type="number"
               defaultValue={String(additionalCash?.value)}
-              onInput={(e) => storeAdditionalCash({ value: +e.target.value })}
+              onInput={(e) =>
+                storeAdditionalCash({ value: +e.currentTarget.value })
+              }
             />
           </label>
         </div>
@@ -114,4 +113,4 @@ export default function Allocation() {
       </div>
     </>
   );
-}
+};

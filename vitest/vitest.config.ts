@@ -1,4 +1,4 @@
-import solidPlugin from "vite-plugin-solid";
+import react from "@vitejs/plugin-react";
 import globby from "globby";
 import { defineConfig } from "vitest/config";
 
@@ -7,7 +7,7 @@ import { defineConfig } from "vitest/config";
 const setupFiles = globby.sync("vitest/setup-files/*.ts");
 
 export default defineConfig({
-  plugins: [solidPlugin()],
+  plugins: [react({ include: /\.tsx$/ })],
   test: {
     globals: true,
     clearMocks: true,

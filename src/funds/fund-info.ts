@@ -239,7 +239,7 @@ export const fundInfo: FundsInfo = {
     summary: "Morningstar Category: Small Growth",
     tilt: "",
     name: "Harbor Small Cap Growth Fund Institutional Class",
-    geo: { us: 0.8584, int: 0.1062 },
+    geo: { us: 1 - 0.1062, int: 0.1062 },
     taxEfficiency: "",
     notes: "",
     url: "https://fundresearch.fidelity.com/mutual-funds/summary/411511868",
@@ -249,7 +249,7 @@ export const fundInfo: FundsInfo = {
     summary: "Large Blend",
     tilt: "",
     name: "State Street S&P 500® Index Securities Lending Series Fund Class II",
-    geo: { us: 99.5, int: 0.5 },
+    geo: { us: 0.995, int: 0.005 },
     taxEfficiency: "",
     notes: "",
     url: "https://workplaceservices.fidelity.com/mybenefits/workplacefunds/summary/O8GB?suppressFundFactSheet=true",
@@ -259,7 +259,7 @@ export const fundInfo: FundsInfo = {
     summary: "Mid-Cap Blend",
     tilt: "",
     name: "State Street Russell Small/Mid Cap® Index Securities Lending Series Fund Class II",
-    geo: { us: 98, int: 2 },
+    geo: { us: 0.98, int: 0.02 },
     taxEfficiency: "",
     notes: "",
     url: "https://workplaceservices.fidelity.com/mybenefits/workplacefunds/composition/O8GA?suppressFundFactSheet=true",
@@ -279,11 +279,13 @@ export const fundInfo: FundsInfo = {
 const validateFundInfo = () => {
   for (const [k, v] of Object.entries(fundInfo)) {
     const { allocation, geo } = v;
-    if (allocation.stocks + allocation.bonds !== 1) {
-      throw new Error(`Fund ${k} allocation does not sum to 1`);
+    const allocTotal = allocation.stocks + allocation.bonds;
+    if (allocTotal !== 1) {
+      throw new Error(`Fund ${k} allocation does not sum to 1: ${allocTotal}`);
     }
-    if (geo.us + geo.int !== 1) {
-      throw new Error(`Fund ${k} geo does not sum to 1`);
+    const geoTotal = geo.us + geo.int;
+    if (geoTotal !== 1) {
+      throw new Error(`Fund ${k} geo does not sum to 1: ${geoTotal}`);
     }
   }
 };

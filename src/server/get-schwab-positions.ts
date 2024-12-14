@@ -1,4 +1,5 @@
 "use server";
+import path from "path";
 import { readSchwabPositionsFile } from "../accounts/positions/schwab/schwab-positions";
 import { glob } from "../utils/file-system/glob";
 
@@ -11,8 +12,10 @@ const findFile = async () => {
 
   const files = await glob(`${EXPORT_DIR}/*.csv`);
 
+  console.info(`:: files`, files);
+
   for (const file of files) {
-    if (file.startsWith("All-Accounts-Positions")) {
+    if (path.basename(file).startsWith("All-Accounts-Positions")) {
       return file;
     }
   }

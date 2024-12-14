@@ -5,12 +5,12 @@ import { SchwabPositions } from "../../accounts/positions/schwab/types";
 import { H1, H2 } from "../../components/ui/headers";
 import { TdHeader } from "../../components/ui/table";
 import { fundInfo } from "../../funds/fund-info";
-import { storageKey } from "../../utils/local-storage/storage-key";
 import { toCurrency } from "../../utils/numbers/to-currency";
 import { toPercentage } from "../../utils/numbers/to-percentage";
+import { AdditionalCashForm } from "./additional-cash-form";
 import { AllocationForm } from "./allocation-form";
 
-const skipKeys = ["Account Total"];
+const skipKeys = ["total"];
 
 const sumPositions = ({ TRS, LPS, Roth }: SchwabPositions) => {
   const sums: Record<string, number> = {};
@@ -29,7 +29,7 @@ const computeTotals = (summed: Record<string, number>) => {
   let cash = 0;
 
   for (const [k, v] of Object.entries(summed)) {
-    if (k === "Cash & Cash Investments") {
+    if (k === "cash") {
       cash += v;
       continue;
     }
@@ -54,26 +54,13 @@ export const AllocationPage: FC<Props> = ({ schwabPositions }) => {
   const summed = sumPositions(schwabPositions);
   const { allocations, totals } = computeTotals(summed);
 
-  const [additionalCash, storeAdditionalCash] = storageKey<{ value: number }>(
-    "additionalCash",
-  );
-
   return (
     <>
       <H1 className="mb-8">Allocation</H1>
       <div className="flex flex-col gap-y-8">
         <div>
           <H2>Adjustments</H2>
-          <label>
-            Additional Cash:{" "}
-            <input
-              type="number"
-              defaultValue={String(additionalCash?.value)}
-              onInput={(e) =>
-                storeAdditionalCash({ value: +e.currentTarget.value })
-              }
-            />
-          </label>
+          <AdditionalCashForm />
         </div>
         <div>
           <H2>Asset Allocation</H2>

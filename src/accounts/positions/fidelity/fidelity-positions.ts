@@ -1,9 +1,9 @@
-import fs from "fs/promises";
+import { readJson } from "../../../utils/file-system/read-json";
+import { fidelityPositionsSchema } from "./fidelity-positions-schema";
 
 export const readFidelityPositionsFile = async (
   fidelityPositionsFile: string,
 ) => {
-  const fileContents = await fs.readFile(fidelityPositionsFile, "utf-8");
-  const fidelityPositions = JSON.parse(fileContents);
-  return fidelityPositions;
+  const data = await readJson(fidelityPositionsFile);
+  return fidelityPositionsSchema.parse(data);
 };

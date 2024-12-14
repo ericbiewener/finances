@@ -1,27 +1,15 @@
 "use client";
 import invariant from "invariant";
 import { FC } from "react";
-import { SchwabPositions } from "../../accounts/positions/schwab/types";
+import { sumPositions } from "../../accounts/positions/sum-positions";
 import { H1, H2 } from "../../components/ui/headers";
 import { TdHeader } from "../../components/ui/table";
 import { fundInfo } from "../../funds/fund-info";
+import { Positions } from "../../server/types";
 import { toCurrency } from "../../utils/numbers/to-currency";
 import { toPercentage } from "../../utils/numbers/to-percentage";
 import { AdditionalCashForm } from "./additional-cash-form";
 import { AllocationForm } from "./allocation-form";
-
-const skipKeys = ["total"];
-
-const sumPositions = ({ TRS, LPS, Roth }: SchwabPositions) => {
-  const sums: Record<string, number> = {};
-  [TRS, LPS, Roth].forEach((pos) => {
-    Object.entries(pos).forEach(([sym, data]) => {
-      if (skipKeys.includes(sym)) return;
-      sums[sym] = (sums[sym] || 0) + data.value;
-    });
-  });
-  return sums;
-};
 
 const computeTotals = (summed: Record<string, number>) => {
   let stocks = 0;
@@ -48,10 +36,10 @@ const computeTotals = (summed: Record<string, number>) => {
   };
 };
 
-type Props = { schwabPositions: SchwabPositions };
+type Props = { positions: Positions };
 
-export const AllocationPage: FC<Props> = ({ schwabPositions }) => {
-  const summed = sumPositions(schwabPositions);
+export const AllocationPage: FC<Props> = ({ positions }) => {
+  const summed = sumPositions(positions);
   const { allocations, totals } = computeTotals(summed);
 
   return (
@@ -92,6 +80,12 @@ export const AllocationPage: FC<Props> = ({ schwabPositions }) => {
               <tr>
                 <TdHeader>Cash</TdHeader>
                 <td>{toCurrency(totals.cash, 0)}</td>
+              </tr>
+              <tr className="border-t bg-yellow-100">
+                <TdHeader>Total</TdHeader>
+                <td>
+                  {toCurrency(totals.cash + totals.bonds + totals.stocks, 0)}
+                </td>
               </tr>
             </tbody>
           </table>

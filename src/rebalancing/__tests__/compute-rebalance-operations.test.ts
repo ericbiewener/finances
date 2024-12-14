@@ -1,9 +1,9 @@
 import { sum } from "../../utils/numbers/sum";
-import { getMockDataFile } from "../../utils/testing/get-mock-data-file.ts";
+import { getMockDataFile } from "../../utils/testing/get-mock-data-file";
 import {
   computeAllActions,
   fundAllocationTargets,
-} from "../compute-rebalance-operations.ts";
+} from "../compute-rebalance-operations";
 
 describe("allocation targets", () => {
   it("fund allocation targets should equal 100%", () => {
@@ -21,7 +21,10 @@ it("computeAllActions", async () => {
   const schwabPositionsFile = getMockDataFile("schwab-account-positions.csv");
   const schwabAccountTotalsFile = getMockDataFile("schwab-account-totals.json");
 
-  const results = await computeAllActions(schwabPositionsFile, schwabAccountTotalsFile);
+  const results = await computeAllActions(
+    schwabPositionsFile,
+    schwabAccountTotalsFile,
+  );
   console.info(`:: results`, results);
   // expect(results).toEqual({
   //   VTWAX: 104453.22,

@@ -5,12 +5,13 @@ import {
   EF2_TARGET_BALANCE,
 } from "../accounts/constants";
 import { trsFundsScott, TrsFundVanguard } from "../accounts/funds-by-account";
-import { readSchwabPositions } from "../accounts/read-schwab-positions";
-import { SchwabAccountTotals, SchwabPositions } from "../accounts/schemas";
+import { readSchwabPositionsFile } from "../accounts/positions/schwab/schwab-positions";
+import { SchwabPositions } from "../accounts/positions/schwab/types";
+import { readSchwabAccountTotals } from "../accounts/read-schwab-account-totals";
+import { SchwabAccountTotals } from "../accounts/schemas";
 import { entries } from "../utils/collections/entries";
 import { round } from "../utils/numbers/round";
 import { sum } from "../utils/numbers/sum";
-import { readSchwabAccountTotals } from "../accounts/read-schwab-account-totals";
 
 export const fundAllocationTargets: Record<TrsFundVanguard, number> = {
   VTWAX: 0.5,
@@ -77,7 +78,8 @@ export const getCheckingChange = (totals: SchwabAccountTotals) =>
   totals.Checking.balance - CHECKING_TARGET_BALANCE;
 
 export const getEf2Actions = ({ EF2 }: SchwabPositions) => {
-  const ef2Change = EF2["Account Total"]["Mkt Val (Market Value)"] - EF2_TARGET_BALANCE;
+  const ef2Change =
+    EF2["Account Total"]["Mkt Val (Market Value)"] - EF2_TARGET_BALANCE;
   return {
     rebalance: Math.abs(ef2Change) > EF2_REBALANCE_THRESHOLD,
     amount: ef2Change,
@@ -93,20 +95,22 @@ export const getAvailableCashToInvest = (
   checkingChange +
   (ef2Actions.rebalance ? ef2Actions.amount : 0);
 
-export const computeAllActions = async (schwabPositionsFile: string, schwabAccountTotalsFile: string) => {
+export const computeAllActions = async (
+  schwabPositionsFile: string,
+  schwabAccountTotalsFile: string,
+) => {
   const [positions, accountTotals] = await Promise.all([
-    readSchwabPositions(schwabPositionsFile),
+    readSchwabPositionsFile(schwabPositionsFile),
     readSchwabAccountTotals(schwabAccountTotalsFile),
   ]);
   const checkingChange = getCheckingChange(accountTotals);
   const ef2Actions = getEf2Actions(positions);
   const cashInBrokerages = getCashInBrokerages(positions);
 
-  const availableCashToInvest = round(getAvailableCashToInvest(
-    cashInBrokerages,
-    checkingChange,
-    ef2Actions,
-  ), 2);
+  const availableCashToInvest = round(
+    getAvailableCashToInvest(cashInBrokerages, checkingChange, ef2Actions),
+    2,
+  );
 
   const trsActions = await computeRebalanceOperations(
     availableCashToInvest,

@@ -1,10 +1,10 @@
 import assert from "assert";
-import { readCsv } from "../utils/file-system/read-csv";
-import { identity } from "../utils/functions/identity";
-import { parseCurrency } from "../utils/strings/parse-currency";
-import { parseFloatAndAssert } from "../utils/strings/parse-float-and-assert";
-import { parsePercent } from "../utils/strings/parse-percent";
-import { schwabPositionsSchema } from "./schemas";
+import { readCsv } from "../../../utils/file-system/read-csv";
+import { identity } from "../../../utils/functions/identity";
+import { parseCurrency } from "../../../utils/strings/parse-currency";
+import { parseFloatAndAssert } from "../../../utils/strings/parse-float-and-assert";
+import { parsePercent } from "../../../utils/strings/parse-percent";
+import { schwabPositionsSchema } from "./schwab-positions-schema";
 
 const isNull = (val: string) => val === "N/A" || val === "--";
 
@@ -40,7 +40,7 @@ const colParsers = {
 type Fund = Record<string, string | number | null>;
 type Account = Record<string, Fund>;
 
-export const readSchwabPositions = async (schwabPositionsFile: string) => {
+export const readSchwabPositionsFile = async (schwabPositionsFile: string) => {
   const rows: string[][] = await readCsv(schwabPositionsFile);
   rows.shift(); // remove first row since it isn't an account
 

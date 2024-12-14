@@ -1,7 +1,7 @@
 "use client";
 import invariant from "invariant";
 import { FC } from "react";
-import { SchwabPositions } from "../../accounts/schemas";
+import { SchwabPositions } from "../../accounts/positions/schwab/types";
 import { H1, H2 } from "../../components/ui/headers";
 import { TdHeader } from "../../components/ui/table";
 import { fundInfo } from "../../funds/fund-info";

@@ -1,4 +1,4 @@
-import { parsePercent } from "../parse-percent.ts";
+import { parsePercent } from "../parse-percent";
 
 it("parsePercent", () => {
   expect(parsePercent("5%")).toBe(0.05);

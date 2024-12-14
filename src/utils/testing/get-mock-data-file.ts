@@ -1,4 +1,5 @@
 import path from "path";
-import { getProjectRoot } from "../file-system/get-project-root";
+import { __PROJECT_ROOT__ } from "../../../project-root";
 
-export const getMockDataFile = (fileName: string) => path.join(getProjectRoot(), "__mock-data__", fileName)
+export const getMockDataFile = (fileName: string) =>
+  path.join(__PROJECT_ROOT__, "__mock-data__", fileName);

@@ -1,5 +1,5 @@
 import globby from "globby";
-import { getProjectRoot } from "./get-project-root";
+import { getProjectRoot } from "../../../project-root";
 
 type Args = Parameters<typeof globby>;
 type Glob = (...args: Args) => ReturnType<typeof globby>;

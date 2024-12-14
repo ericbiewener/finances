@@ -1,4 +1,4 @@
-import { readSchwabPositions } from "../src/accounts/read-schwab-positions";
+import { readSchwabPositionsFile } from "../src/accounts/positions/schwab/schwab-positions";
 import { round } from "../src/utils/numbers/round";
 import { yargsInit } from "../src/utils/scripts/yargs";
 
@@ -10,11 +10,10 @@ const roundIt = (value: number) => round(value, -2).toLocaleString();
 
 const fundName = (fund: string) => `${fund}:`.padEnd(6);
 const fundValue = (fund: { "Mkt Val (Market Value)": number }) =>
-  roundIt(fund["Mkt Val (Market Value)"], -2).toLocaleString();
-
+  roundIt(fund["Mkt Val (Market Value)"]).toLocaleString();
 
 const main = async () => {
-  const positions = await readSchwabPositions(schwabPositions);
+  const positions = await readSchwabPositionsFile(schwabPositions);
 
   Object.entries(positions).forEach(([a, funds]) => {
     console.log(`[b]${a}[/b]`);

@@ -14,7 +14,9 @@ const MenuItem: FCC<{ href: string }> = ({ href, children }) => {
         "border-transparent hover:border-sky-400": !isActive,
       })}
     >
-      <a href={href}>{children}</a>
+      <a href={href} className="text-white">
+        {children}
+      </a>
     </li>
   );
 };

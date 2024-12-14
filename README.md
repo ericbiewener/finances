@@ -16,7 +16,7 @@
 - Sell off `VASIX`
 - `VTWAX` -> split into... can't remember, but easy to find ono boggleheads. Gets me foreign tax credit in taxable account
 - `DFCEX` -> `DFAE` (ETF equivalent)
-- Probably sell off all DFA funds (high ER)
+- Probably sell off all DFA funds (high ER). There are vanguard ones with lower ER
 
 1. Stocks/Bonds
 2. Tilt

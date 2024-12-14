@@ -6,11 +6,12 @@ export type FundInfo = {
   name: string;
   notes: string;
   url: string;
-  tilt: {
-    cap: "small" | "mid" | "large";
-    style: "value" | "growth";
+  tilt?: {
+    cap?: "small" | "mid" | "large";
+    style?: "value" | "growth";
     emergingMarkets?: number;
   };
+  maturity?: "short" | "intermediate" | "long";
   geo: {
     us: number;
     int: number;
@@ -30,18 +31,18 @@ type FundsInfo = Record<AllFunds, FundInfo>;
 export const fundInfo: FundsInfo = {
   BSV: {
     allocation: { stocks: 0, bonds: 1 },
-    tilt: "",
+    maturity: "short",
     name: "Vanguard Short-Term Bond ETF",
     geo: { us: 1, int: 0 },
     taxEfficiency: "",
-    notes: "Short-Term Bond",
+    notes: "Index fund",
     url: "https://investor.vanguard.com/investment-products/etfs/profile/bsv",
     etf: true,
     er: 0.04 / 100,
   },
   VTIP: {
     allocation: { stocks: 0, bonds: 1 },
-    tilt: "",
+    maturity: "short",
     name: "Vanguard Short-Term Inflation-Protected Securities ETF",
     geo: { us: 1, int: 0 },
     taxEfficiency: "",
@@ -52,18 +53,19 @@ export const fundInfo: FundsInfo = {
   },
   DFGFX: {
     allocation: { stocks: 0, bonds: 1 },
-    tilt: "",
+    maturity: "short",
     name: "DFA Two-Year Global Fixed-Income I",
-    geo: { us: 1, int: 0 },
+    geo: { us: 0.5, int: 0.5 },
     taxEfficiency: "",
-    notes: "Short-Term Bond",
-    url: "https://www.morningstar.com/funds/xnas/dfgfx/quote",
+    notes:
+      "Short-Term Bond. Has international, but no ideal how much. Percentages were made up.",
+    url: "https://www.dimensional.com/us-en/funds/dfgfx/two-year-global-fixed-income-portfolio-i",
     etf: false,
     er: 0.17 / 100,
   },
   SWRSX: {
     allocation: { stocks: 0, bonds: 1 },
-    tilt: "",
+    maturity: "intermediate",
     name: "Schwab Treasury Inflation Protected Securities Index Fund",
     geo: { us: 1, int: 0 },
     taxEfficiency: "",
@@ -74,7 +76,6 @@ export const fundInfo: FundsInfo = {
   },
   SWTSX: {
     allocation: { stocks: 1, bonds: 0 },
-    tilt: "",
     name: "Schwab Total Stock Market Index Fund",
     geo: { us: 1, int: 0 },
     taxEfficiency: "",
@@ -87,7 +88,10 @@ export const fundInfo: FundsInfo = {
   },
   DFVEX: {
     allocation: { stocks: 1, bonds: 0 },
-    tilt: "Mid-Cap Value",
+    tilt: {
+      cap: "mid",
+      style: "value",
+    },
     name: "DFA US Vector Equity Portfolio (I)",
     geo: { us: 1, int: 0 },
     taxEfficiency: "",
@@ -98,7 +102,6 @@ export const fundInfo: FundsInfo = {
   },
   VGSLX: {
     allocation: { stocks: 1, bonds: 0 },
-    tilt: "",
     name: "Vanguard Real Estate Index Fund Admiral Shares",
     geo: { us: 1, int: 0 },
     taxEfficiency: "",
@@ -108,9 +111,22 @@ export const fundInfo: FundsInfo = {
     etf: "VNQ",
     etfNotes: "Same ER",
   },
+  VNQ: {
+    allocation: { stocks: 1, bonds: 0 },
+    name: "Vanguard Real Estate ETF",
+    geo: { us: 1, int: 0 },
+    taxEfficiency: "",
+    notes: "US Real Estate - ETF version of VGSLX",
+    url: "https://investor.vanguard.com/investment-products/etfs/profile/vnq",
+    etf: true,
+    er: 0.13 / 100,
+  },
   VSIAX: {
     allocation: { stocks: 1, bonds: 0 },
-    tilt: "",
+    tilt: {
+      cap: "small",
+      style: "value",
+    },
     name: "Vanguard Small-Cap Value Index Fund Admiral Shares",
     geo: { us: 1, int: 0 },
     taxEfficiency: "",
@@ -120,20 +136,11 @@ export const fundInfo: FundsInfo = {
     etf: "VBR",
     etfNotes: "Same ER",
   },
-  VNQ: {
-    allocation: { stocks: 1, bonds: 0 },
-    tilt: "",
-    name: "Vanguard Real Estate ETF",
-    geo: { us: 1, int: 0 },
-    taxEfficiency: "",
-    notes: "US Real Estate - ETF version of VGSLX",
-    url: "https://investor.vanguard.com/investment-products/etfs/profile/vnq",
-    etf: true,
-    er: 0.13 / 100,
-  },
   DFAE: {
     allocation: { stocks: 1, bonds: 0 },
-    tilt: "",
+    tilt: {
+      emergingMarkets: 1,
+    },
     name: "DFA Emerging Core Equity Market ETF",
     geo: { us: 0, int: 1 },
     taxEfficiency: "",
@@ -145,7 +152,7 @@ export const fundInfo: FundsInfo = {
   DFAX: {
     allocation: { stocks: 1, bonds: 0 },
     name: "DFA World ex US Core Equity 2 ETF",
-    tilt: "",
+    tilt: { emergingMarkets: 32 },
     geo: { us: 0, int: 1 },
     taxEfficiency: "",
     notes:
@@ -156,7 +163,6 @@ export const fundInfo: FundsInfo = {
   },
   VNQI: {
     allocation: { stocks: 1, bonds: 0 },
-    tilt: "",
     name: "Vanguard Global ex-U.S. Real Estate ETF",
     geo: { us: 0, int: 1 },
     taxEfficiency: "",
@@ -168,7 +174,7 @@ export const fundInfo: FundsInfo = {
   DFCEX: {
     allocation: { stocks: 1, bonds: 0 },
     name: "DFA Emerging Markets Core Equity Portfolio I",
-    tilt: "",
+    tilt: { emergingMarkets: 1 },
     geo: { us: 0, int: 1 },
     taxEfficiency: "",
     notes:
@@ -179,42 +185,42 @@ export const fundInfo: FundsInfo = {
   },
   DFVQX: {
     allocation: { stocks: 1, bonds: 0 },
-    tilt: "",
     name: "DFA International Vector Equity Portfolio I",
     geo: { us: 0, int: 1 },
     taxEfficiency: "",
     url: "https://www.dimensional.com/us-en/funds/dfvqx/international-vector-equity-portfolio",
-    notes: "Probably the same as DFAX?",
+    notes: "",
     er: 0.34 / 100,
     etf: false,
   },
   VEMAX: {
     allocation: { stocks: 1, bonds: 0 },
-    tilt: "",
+    tilt: { emergingMarkets: 1 },
     name: "Vanguard Emerging Markets Stock Index Fund Admiral Shares",
     geo: { us: 0, int: 1 },
     taxEfficiency: "",
     notes: "",
     url: "https://investor.vanguard.com/investment-products/mutual-funds/profile/vemax",
+    etf: "VWO",
+    er: 0.14 / 100,
   },
   VTWAX: {
     allocation: { stocks: 1, bonds: 0 },
-    tilt: "",
-    name: "Vanguard Emerging Markets Stock Index Fund Admiral Shares",
-    geo: { us: 0, int: 1 },
+    name: "Vanguard Total World Stock Index Fund Admiral Shares",
+    geo: { us: 0.676, int: 1 - 0.676 },
     taxEfficiency: "",
     notes:
       "US & International Index fund - can split to get foreign tax savings",
     url: "https://investor.vanguard.com/investment-products/mutual-funds/profile/vtwax",
-    etf: "VWO",
-    er: 0.14 / 100,
+    er: 0.1 / 100,
+    etf: "VT",
   },
   VTEB: {
     allocation: { stocks: 0, bonds: 1 },
-    tilt: "",
+    maturity: "intermediate",
     name: "Vanguard Tax-Exempt Bond ETF",
     geo: { us: 1, int: 0 },
-    taxEfficiency: "",
+    taxEfficiency: "Some tax-exemption",
     notes:
       "VTEB tracks a market-weighted index of investment-grade debt issued by state and local governments and agencies. Interest is exempt from US income tax and from AMT. VTEB brings the Vanguard brand to the US muni bond space. The fund competes directly with its rival, MUB from iShares, which tracks the same S&P index. Its underlying index primarily includes municipal bonds issued by state or local governments or agencies whose interest is federal tax-exempt and AMT-free. Securities that have a rating of at least investment grade as determined by an NRSRO, denominated in USD and meeting minimum maturity and size requirement are eligible for index inclusion. As with all Vanguard ETFs, VTEB only discloses its holdings monthly.",
     url: "https://investor.vanguard.com/investment-products/etfs/profile/vteb",
@@ -223,7 +229,7 @@ export const fundInfo: FundsInfo = {
   },
   ORTYX: {
     allocation: { stocks: 0, bonds: 1 },
-    tilt: "",
+    maturity: "intermediate",
     name: "NYLI MacKay Oregon Muni Fund",
     geo: { us: 1, int: 0 },
     taxEfficiency: "80% of holdings are Fed & State exempt",
@@ -234,7 +240,7 @@ export const fundInfo: FundsInfo = {
   },
   VBTLX: {
     allocation: { stocks: 0, bonds: 1 },
-    tilt: "",
+    maturity: "intermediate",
     name: "Vanguard Total Bond Market Index Fund Admiral Shares",
     geo: { us: 1, int: 0 },
     taxEfficiency: "",
@@ -242,12 +248,11 @@ export const fundInfo: FundsInfo = {
     url: "https://investor.vanguard.com/investment-products/mutual-funds/profile/vbtlx",
     er: 0.05 / 100,
     etf: "BND",
-    etfNotes: "Lower ER: 0.03%",
   },
   VWITX: {
     allocation: { stocks: 0, bonds: 1 },
-    tilt: "",
-    name: "VANGUARD INTERM-TERM TX-EX INV",
+    maturity: "intermediate",
+    name: "Vanguard Intermediate-Term Tax-Exempt Fund Investor Shares",
     geo: { us: 1, int: 0 },
     taxEfficiency: "Bonds, federal tax-exempt",
     notes: "Bonds, federal tax-exempt",
@@ -257,7 +262,7 @@ export const fundInfo: FundsInfo = {
   },
   VWIUX: {
     allocation: { stocks: 0, bonds: 1 },
-    tilt: "",
+    maturity: "intermediate",
     name: "Vanguard Intermediate-Term Tax-Exempt Fund Admiral Shares",
     geo: { us: 1, int: 0 },
     taxEfficiency: "",
@@ -269,8 +274,8 @@ export const fundInfo: FundsInfo = {
   },
   BND: {
     allocation: { stocks: 0, bonds: 1 },
-    tilt: "",
     name: "Vanguard Total Bond Market ETF",
+    maturity: "intermediate",
     geo: { us: 1, int: 0 },
     taxEfficiency: "",
     notes: "EFT of VBTLX",
@@ -280,7 +285,6 @@ export const fundInfo: FundsInfo = {
   },
   DFIC: {
     allocation: { stocks: 1, bonds: 0 },
-    tilt: "",
     name: "DFA International Core Equity 2 ETF",
     geo: { us: 0, int: 1 },
     taxEfficiency: "",
@@ -291,7 +295,6 @@ export const fundInfo: FundsInfo = {
   },
   VASIX: {
     allocation: { stocks: 0.195, bonds: 0.805 },
-    tilt: "",
     name: "Vanguard LifeStrategy Income Fund",
     geo: { us: 0.676, int: 0.324 },
     taxEfficiency: "",
@@ -303,7 +306,9 @@ export const fundInfo: FundsInfo = {
   // Fidelity 401k
   FSPSX: {
     allocation: { stocks: 1, bonds: 0 },
-    tilt: "",
+    tilt: {
+      cap: "large",
+    },
     name: "Fidelity International Index Fund",
     geo: { us: 0, int: 1 },
     taxEfficiency: "",
@@ -315,7 +320,10 @@ export const fundInfo: FundsInfo = {
   },
   HASGX: {
     allocation: { stocks: 1 - 0.0354, bonds: 0.0354 },
-    tilt: "",
+    tilt: {
+      cap: "small",
+      style: "growth",
+    },
     name: "Harbor Small Cap Growth Fund Institutional Class",
     geo: { us: 1 - 0.1062, int: 0.1062 },
     taxEfficiency: "",
@@ -327,7 +335,9 @@ export const fundInfo: FundsInfo = {
   },
   O8GB: {
     allocation: { stocks: 1, bonds: 0 },
-    tilt: "",
+    tilt: {
+      cap: "large",
+    },
     name: "State Street S&P 500 Index Securities Lending Series Fund Class II",
     geo: { us: 0.995, int: 0.005 },
     taxEfficiency: "",
@@ -339,25 +349,27 @@ export const fundInfo: FundsInfo = {
   },
   O8GA: {
     allocation: { stocks: 1, bonds: 0 },
-    tilt: "",
+    tilt: {
+      cap: "mid",
+    },
     name: "State Street Russell Small/Mid Cap Index Securities Lending Series Fund Class II",
     geo: { us: 0.98, int: 0.02 },
     taxEfficiency: "",
     notes: "Mid-Cap Blend",
     url: "https://workplaceservices.fidelity.com/mybenefits/workplacefunds/composition/O8GA?suppressFundFactSheet=true",
-    er: 0.022 / 100,
+    er: 0.02 / 100,
     etf: false,
     etfNotes: "Irrelevant. 401k offering restricted.",
   },
   O8GC: {
     allocation: { stocks: 0, bonds: 1 },
-    tilt: "",
+    maturity: "intermediate",
     name: "State Street U.S. Bond Index Securities Lending Series Fund Class XIV",
     geo: { us: 0.93, int: 0.07 },
     taxEfficiency: "",
     notes: "Intermediate Core Bond",
     url: "https://workplaceservices.fidelity.com/mybenefits/workplacefunds/summary/O8GC?suppressFundFactSheet=true",
-    er: 0.022 / 100,
+    er: 0.02 / 100,
     etf: false,
     etfNotes: "Irrelevant. 401k offering restricted.",
   },

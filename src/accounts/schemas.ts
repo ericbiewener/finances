@@ -1,12 +1,12 @@
-import { z } from "zod";
-
+import { z as zz } from "zod";
+import { z } from "../utils/zod/zod";
 /**
  * Schwab Account Totals
  */
 const brokerageSchema = z.strictObject({
-  accountNum: z.string(),
-  cash: z.number(),
-  balance: z.number(),
+  accountNum: z.string,
+  cash: z.number,
+  balance: z.number,
 });
 
 export const schwabAccountTotalsSchema = z.strictObject({
@@ -17,10 +17,10 @@ export const schwabAccountTotalsSchema = z.strictObject({
   Roth: brokerageSchema,
   TRS: brokerageSchema,
   Checking: z.strictObject({
-    accountNum: z.string(),
-    cash: z.null(),
-    balance: z.number(),
+    accountNum: z.string,
+    cash: z.null,
+    balance: z.number,
   }),
 });
 
-export type SchwabAccountTotals = z.infer<typeof schwabAccountTotalsSchema>;
+export type SchwabAccountTotals = zz.infer<typeof schwabAccountTotalsSchema>;

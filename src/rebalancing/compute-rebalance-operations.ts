@@ -35,20 +35,16 @@ export const fundAllocationTargets: Record<TrsFundVanguard, number> = {
 // };
 
 const getCashInBrokerages = (positions: SchwabPositions) =>
-  sum(
-    Object.values(positions).map(
-      (a) => a["Cash & Cash Investments"]["Mkt Val (Market Value)"],
-    ),
-  );
+  sum(Object.values(positions).map((a) => a.cash.value));
 
 export const getTotalWithoutScottFunds = (TRS: SchwabPositions["TRS"]) => {
-  let total = TRS["Account Total"]["Mkt Val (Market Value)"];
+  let total = TRS.total.value;
   for (const fund of trsFundsScott) {
-    total -= TRS[fund]["Mkt Val (Market Value)"];
+    total -= TRS[fund].value;
   }
 
   // We will consider TRS cash as available cash to invest via getCashInBrokerages()
-  return total - TRS["Cash & Cash Investments"]["Mkt Val (Market Value)"];
+  return total - TRS.cash.value;
 };
 
 /**
@@ -66,7 +62,7 @@ export const computeRebalanceOperations = async (
   return entries(fundAllocationTargets).reduce(
     (acc, [fund, target]) => {
       const targetValue = total * target;
-      const currentValue = TRS[fund]["Mkt Val (Market Value)"];
+      const currentValue = TRS[fund].value;
       acc[fund] = round(targetValue - currentValue, 2);
       return acc;
     },
@@ -78,8 +74,7 @@ export const getCheckingChange = (totals: SchwabAccountTotals) =>
   totals.Checking.balance - CHECKING_TARGET_BALANCE;
 
 export const getEf2Actions = ({ EF2 }: SchwabPositions) => {
-  const ef2Change =
-    EF2["Account Total"]["Mkt Val (Market Value)"] - EF2_TARGET_BALANCE;
+  const ef2Change = EF2.total.value - EF2_TARGET_BALANCE;
   return {
     rebalance: Math.abs(ef2Change) > EF2_REBALANCE_THRESHOLD,
     amount: ef2Change,

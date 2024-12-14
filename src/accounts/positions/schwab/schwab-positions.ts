@@ -18,12 +18,16 @@ const currency = maybeNull(parseCurrency);
 const percent = maybeNull(parsePercent);
 const ident = maybeNull(identity);
 
+const VALUE_HEADER = "Mkt Val (Market Value)";
+const CASH_FUND_NAME = "Cash & Cash Investments";
+const ACCOUNT_TOTAL_FUND_NAME = "Account Total";
+
 const colParsers = {
   "Qty (Quantity)": float,
   Price: currency,
   "Price Chng % (Price Change %)": percent,
   "Price Chng $ (Price Change $)": currency,
-  "Mkt Val (Market Value)": currency,
+  [VALUE_HEADER]: currency,
   "Day Chng % (Day Change %)": percent,
   "Day Chng $ (Day Change $)": currency,
   "Cost Basis": currency,
@@ -59,21 +63,18 @@ export const readSchwabPositionsFile = async (schwabPositionsFile: string) => {
       continue;
     }
 
-    // @TODO: remove once checking brokerage is gone
     if (cell === "Checking_Brokerage ...800") {
       isParsingCheckingBrokerage = true;
       continue;
     }
 
     if (!row[1]) {
-      // @TODO: remove once checking brokerage is gone
       isParsingCheckingBrokerage = false;
       account = {};
       accounts[cell.slice(0, cell.indexOf(" "))] = account;
       continue;
     }
 
-    // @TODO: remove once checking brokerage is gone
     if (isParsingCheckingBrokerage) {
       continue;
     }
@@ -82,16 +83,26 @@ export const readSchwabPositionsFile = async (schwabPositionsFile: string) => {
       headers = row;
       continue;
     }
+
     assert(account, "account should be defined");
     assert(headers, "headers should be defined");
+
     const fund: Fund = {};
-    account[cell] = fund;
+    const fundName =
+      cell === CASH_FUND_NAME
+        ? "cash"
+        : cell === ACCOUNT_TOTAL_FUND_NAME
+          ? "total"
+          : cell;
+
+    account[fundName] = fund;
     // start at 1 to skip Symbol header
     for (let i = 1; i < headers.length; i++) {
       const header = headers[i];
       const val = row[i];
       const parse = colParsers[header as keyof typeof colParsers];
-      fund[headers[i]] = parse ? parse(val) : val;
+      const finalHeader = header === VALUE_HEADER ? "value" : header;
+      fund[finalHeader] = parse ? parse(val) : val;
     }
   }
 

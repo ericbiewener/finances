@@ -1,6 +1,6 @@
 import { AllFunds } from "../accounts/funds-by-account";
-import { AllocationType } from "./types";
 import { keys } from "../utils/collections/keys";
+import { AllocationType } from "./types";
 
 export type FundInfo = {
   name: string;
@@ -213,16 +213,82 @@ export const fundInfo: FundsInfo = {
     url: "https://www.dimensional.com/us-en/funds/dfic/international-core-equity-2-etf",
   },
   VASIX: {
-    allocation: { stocks: .195, bonds: .805 },
+    allocation: { stocks: 0.195, bonds: 0.805 },
     summary: "Mix of bond & stock indeces, US and International",
     tilt: "",
     name: "Vanguard LifeStrategy Income Fund",
-    geo: { us: .676, int: .324 },
+    geo: { us: 0.676, int: 0.324 },
     taxEfficiency: "",
     notes: "",
     url: "https://www.dimensional.com/us-en/funds/dfic/international-core-equity-2-etf",
+  },
+
+  // Fidelity 401k
+  FSPSX: {
+    allocation: { stocks: 1, bonds: 0 },
+    summary: "Morningstar Category: Foreign Large Blend",
+    tilt: "",
+    name: "Fidelity International Index Fund",
+    geo: { us: 0, int: 1 },
+    taxEfficiency: "",
+    notes: "",
+    url: "https://fundresearch.fidelity.com/mutual-funds/summary/315911727",
+  },
+  HASGX: {
+    allocation: { stocks: 1 - 0.0354, bonds: 0.0354 },
+    summary: "Morningstar Category: Small Growth",
+    tilt: "",
+    name: "Harbor Small Cap Growth Fund Institutional Class",
+    geo: { us: 0.8584, int: 0.1062 },
+    taxEfficiency: "",
+    notes: "",
+    url: "https://fundresearch.fidelity.com/mutual-funds/summary/411511868",
+  },
+  O8GB: {
+    allocation: { stocks: 1, bonds: 0 },
+    summary: "Large Blend",
+    tilt: "",
+    name: "State Street S&P 500® Index Securities Lending Series Fund Class II",
+    geo: { us: 99.5, int: 0.5 },
+    taxEfficiency: "",
+    notes: "",
+    url: "https://workplaceservices.fidelity.com/mybenefits/workplacefunds/summary/O8GB?suppressFundFactSheet=true",
+  },
+  O8GA: {
+    allocation: { stocks: 1, bonds: 0 },
+    summary: "Mid-Cap Blend",
+    tilt: "",
+    name: "State Street Russell Small/Mid Cap® Index Securities Lending Series Fund Class II",
+    geo: { us: 98, int: 2 },
+    taxEfficiency: "",
+    notes: "",
+    url: "https://workplaceservices.fidelity.com/mybenefits/workplacefunds/composition/O8GA?suppressFundFactSheet=true",
+  },
+  O8GC: {
+    allocation: { stocks: 0, bonds: 1 },
+    summary: "Intermediate Core Bond",
+    tilt: "",
+    name: "State Street U.S. Bond Index Securities Lending Series Fund Class XIV",
+    geo: { us: 0.93, int: 0.07 },
+    taxEfficiency: "",
+    notes: "",
+    url: "https://workplaceservices.fidelity.com/mybenefits/workplacefunds/summary/O8GC?suppressFundFactSheet=true",
+  },
+};
+
+const validateFundInfo = () => {
+  for (const [k, v] of Object.entries(fundInfo)) {
+    const { allocation, geo } = v;
+    if (allocation.stocks + allocation.bonds !== 1) {
+      throw new Error(`Fund ${k} allocation does not sum to 1`);
+    }
+    if (geo.us + geo.int !== 1) {
+      throw new Error(`Fund ${k} geo does not sum to 1`);
+    }
   }
 };
+
+validateFundInfo();
 
 export type FundsByAllocation = Record<AllocationType, string[]>;
 
@@ -232,7 +298,7 @@ export const fundsByAllocation = Object.entries(
   (acc, [k, { allocation }]) => {
     const { stocks, bonds } = allocation;
     if (stocks) {
-      console.info(`:: bonds`, bonds)
+      console.info(`:: bonds`, bonds);
       const a = bonds ? acc.mixed : acc.stocks;
       a.push(k);
     } else {
@@ -243,4 +309,4 @@ export const fundsByAllocation = Object.entries(
   { stocks: [], bonds: [], mixed: [] },
 );
 
-export const allocationTypes: AllocationType[] = keys(fundsByAllocation)
+export const allocationTypes: AllocationType[] = keys(fundsByAllocation);

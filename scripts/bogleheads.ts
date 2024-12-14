@@ -9,8 +9,8 @@ const { schwabPositions } = yargsInit({
 const roundIt = (value: number) => round(value, -2).toLocaleString();
 
 const fundName = (fund: string) => `${fund}:`.padEnd(6);
-const fundValue = (fund: { "Mkt Val (Market Value)": number }) =>
-  roundIt(fund["Mkt Val (Market Value)"]).toLocaleString();
+const fundValue = (fund: { value: number }) =>
+  roundIt(fund.value).toLocaleString();
 
 const main = async () => {
   const positions = await readSchwabPositionsFile(schwabPositions);

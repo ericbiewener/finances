@@ -17,7 +17,7 @@ const sumPositions = ({ TRS, LPS, Roth }: SchwabPositions) => {
   [TRS, LPS, Roth].forEach((pos) => {
     Object.entries(pos).forEach(([sym, data]) => {
       if (skipKeys.includes(sym)) return;
-      sums[sym] = (sums[sym] || 0) + data["Mkt Val (Market Value)"];
+      sums[sym] = (sums[sym] || 0) + data.value;
     });
   });
   return sums;
